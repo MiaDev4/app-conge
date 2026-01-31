@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liste des demandes de congés</title>
+</head>
+<body>
+    <a href="/conges/new">Ajouter une demande</a>
+    <h2>Liste des demandes de congés</h2>
+    <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Code Employé</th>
+                <th>Nom Employé</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Motif</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            <% demandes.forEach(demande => { %>
+                <tr>
+                    <td><%= demande.id %></td>
+                    <td><%= demande.employee_code %></td>
+                    <td><%= demande.employee_name %></td>
+                    <td><%= demande.start_date.toISOString().split('T')[0] %></td>
+                    <td><%= demande.end_date.toISOString().split('T')[0] %></td>
+                    <td><%= demande.motif %></td>
+                    <td><%= demande.status %></td>
+                    <td>
+                        <% if(demande.status === 'EN_ATTENTE') { %>
+                            <a href="/conges/<%= demande.id %>/edit">Modifier</a>
+                            <form action="/conges/<%= demande.id %>/delete" method="POST"
+                                 style="display:inline;"
+                                 onsubmit="return  confirm('Voulez-vous vraiment supprimer cette demande ?')">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        <% }%>
+                    </td>
+                </tr>
+            <% }); %>
+    </table>
+    
+</body>
+</html>

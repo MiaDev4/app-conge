@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demandes de congés</title>
+  </head>
+  <body>
+    <h1>Formulaire de demande de congé</h1>
+    <form action="/conges" method="POST">
+      <label>Code</label>
+      <input
+        type="text"
+        name="employee_code"
+        value="<%=demande.employee_code%>"
+      />
+
+      <label>Nom:</label>
+      <input
+        type="text"
+        name="employee_name"
+        value="<%=demande.employee_name%>"
+        />
+
+      <label>Date de début:</label>
+      <input
+        type="date"
+        name="start_date"
+        value="<%=demande.start_date%>"
+      />
+
+      <label>Date de fin:</label>
+      <input
+        type="date"
+        name="end_date"
+        value="<%=demande.end_date%>"
+      />
+
+      <label>Motif:</label>
+      <input type="text" name="motif" value="<%=demande.motif%>" />
+
+      <button type="submit">Soumettre la demande</button>
+    </form>
+      <% if (errors && errors.length > 0) { %>
+              <p style="color: red;"><%= errors[0] %></p>
+            </ul>
+          <% } %>
+          <a href="/conges">Liste des demandes</a>
+      
+     </body>
+</html>
