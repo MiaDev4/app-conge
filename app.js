@@ -57,9 +57,9 @@ if( (new Date(end_date) - new Date(start_date)) / (1000 * 60 * 60 * 24) > 30){
 const sql = 'INSERT INTO conges (employee_code, employee_name, start_date, end_date, motif, status) VALUES (?, ?, ?, ?, ?, "EN_ATTENTE")';
 db.query(sql, [employee_code,employee_name,start_date,end_date,motif], (err, results) => {
     if(err)throw err;
+    res.redirect('/conges');
 });
-res.redirect ('/conges')
- }) ;
+}) ;
 
 // GET /conges/: id/edit
 app. get ('/conges/:id/edit', (req, res) => {
@@ -68,16 +68,18 @@ const id = req.params.id;
 const sql = 'SELECT * FROM conges WHERE id = ?';
 db.query(sql, [id], (err, results) => {
     if(err)throw err;
-    res.render('form', { demande:{}, errors: [] });
+    res.render('form', { demande:results[0], errors: [] });
 });
 }) ;
 
-// POST /conges/: id
+//  /conges/: id
 app.post ('/conges/:id', (req, res) => {
 // TODO: mise à jour si EN_ATTENTE res. redirect ('/conges');
 const id = req.params.id;
-const {employee_code,employee_name,start_date,end_date,motif} = req.body;
+let {employee_code,employee_name,start_date,end_date,motif} = req.body;
 const sqlSelect = 'SELECT * FROM conges WHERE id = ?';
+start_date = start_date || null;
+end_date   = end_date   || null;
 db.query(sqlSelect, [id], (err, results) => {
     if(err)throw err;
     if(results.length === 0){
@@ -90,9 +92,8 @@ db.query(sqlSelect, [id], (err, results) => {
     const sqlUpdate = 'UPDATE conges SET employee_code = ?, employee_name = ?, start_date = ?, end_date = ?, motif = ? WHERE id = ?';
     db.query(sqlUpdate, [employee_code,employee_name,start_date,end_date,motif,id], (err, results) => {
         if(err)throw err;
-        res.redirect('/conges');
+        return res.redirect('/conges');
     });
-    res.render('form', { demande:{}, errors: [] });
 });
 }) ;
 
